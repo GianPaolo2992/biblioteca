@@ -1,7 +1,6 @@
 package repository;
 
 import config.DbConnection;
-import entity.Libri;
 import entity.Utenti;
 
 import java.sql.Connection;
@@ -66,6 +65,22 @@ public class UtentiRepository {
             pstmt.setString(2,oUtente.getCognome());
             pstmt.setInt(3,id);
 
+            pstmt.executeUpdate();
+            pstmt.close();
+
+        }catch (ClassNotFoundException|SQLException e){
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+    }
+    public void delete(Utenti oUtente){
+        try{
+            Connection c = DbConnection.openConnection();
+            System.out.println("Connnessione Riuscita");
+            String query = "DELETE FROM utenti " +
+                    "WHERE idu = ? ";
+            PreparedStatement pstmt = c.prepareStatement(query);
+            pstmt.setInt(1,oUtente.getId());
             pstmt.executeUpdate();
             pstmt.close();
 

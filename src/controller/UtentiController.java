@@ -36,18 +36,19 @@ public class UtentiController {
                 System.out.println("scelta non valida scegliere 1. vero oppure 0.falso");
             }
         }
-        Utenti oUtente = new Utenti(nome,cognome,prestato);
+        Utenti oUtente = new Utenti(nome, cognome, prestato);
         utentiService.create(oUtente);
     }
 
-    public void read(){
+    public void read() {
         System.out.println("ecco una lista di libri");
         List<Utenti> listaUtenti = utentiService.read();
-        for(Utenti utente : listaUtenti ){
+        for (Utenti utente : listaUtenti) {
             System.out.println(utente.toStringinLine());
         }
 
     }
+
     public void update() {
         read();
         System.out.println("inserisci un id alfa numerico da aggiornare");
@@ -58,8 +59,8 @@ public class UtentiController {
         System.out.println("inserisci il cognome dell' utente ");
         String cognome = scanner.nextLine();
 
-        Utenti oUtente = new Utenti(nome,cognome);
-        utentiService.update(oUtente,idu);
+        Utenti oUtente = new Utenti(nome, cognome);
+        utentiService.update(oUtente, idu);
     }
     /*public void updateLibroprestato() {
 
@@ -85,4 +86,13 @@ public class UtentiController {
         Utenti oUtente = new Utenti(prestato);
         utentiService.update(oUtente);
     }*/
+
+    public void delete() {
+        read();
+        System.out.println("scegli un id tra i libri mostrati per eliminarlo");
+        int idu = scanner.nextInt();
+        scanner.nextLine();
+        Utenti oUtente = new Utenti(idu);
+        utentiService.delete(oUtente);
+    }
 }

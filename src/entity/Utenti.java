@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Utenti {
 
-    private int id;
+    private int idu;
     private String nome;
     private String cognome;
     private boolean libri_prestati;
@@ -32,6 +32,10 @@ public class Utenti {
         this.libri_prestati=prestato; // costruttore per cambiare valore al booleano quando utente prende
     }
 
+    public Utenti(int idu) {
+        this.idu = idu;
+    }
+
 
     public List<Libri> getListaLibri(){
         return libriInPrestito;
@@ -45,10 +49,10 @@ public class Utenti {
 
 
     public int getId() {
-        return id;
+        return idu;
     }
     public void setId(int id) {
-        this.id = id;
+        this.idu = id;
     }
 
 
@@ -77,9 +81,9 @@ public class Utenti {
     }
 
     public String toString(){
-        return "id : " + id + "\n nome: " + nome + "\n cognome: " + cognome + "\n libri in prestito: " + libri_prestati;
+        return "id : " + idu + "\n nome: " + nome + "\n cognome: " + cognome + "\n libri in prestito: " + libri_prestati;
     }
     public String toStringinLine(){
-        return "id : " + id + " nome: " + nome + " cognome: " + cognome + " libri in prestito: " + libri_prestati;
+        return "id : " + idu + " nome: " + nome + " cognome: " + cognome + " libri in prestito: " + libri_prestati;
     }
 }

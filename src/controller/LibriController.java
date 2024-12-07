@@ -12,7 +12,7 @@ public class LibriController {
 
     public void create(){
         System.out.println("inserisci un id alfa nmerico");
-        String idl = scanner.nextLine();
+        String idl = scanner.nextLine().toUpperCase();
         System.out.println("inserisci il titolo del nuovo libro");
         String titolo = scanner.nextLine();
         System.out.println("inserisci il nome dell' autore ");

@@ -1,7 +1,8 @@
+package view;
+
 import controller.LibriController;
+import controller.PrestitiController;
 import controller.UtentiController;
-import service.LibriService;
-import service.UtentiService;
 
 import java.util.Scanner;
 
@@ -24,7 +25,7 @@ public class Main {
         scanner.nextLine();
         do {
             if(entityChoice == 1){
-                System.out.println("***Menu***");
+                System.out.println("***Menu Libri***");
                 System.out.println("1. crea un nuovo librio");
                 System.out.println("2. lista libri");
                 System.out.println("3. aggiorna libri ");
@@ -59,7 +60,7 @@ public class Main {
                 }
             }
         else if(entityChoice == 2){
-            System.out.println("***Menu***");
+            System.out.println("***Menu Utenti***");
             System.out.println("1. crea un nuovo Utente");
             System.out.println("2. lista Utenti");
             System.out.println("3. aggiorna Utente ");
@@ -80,7 +81,7 @@ public class Main {
                     utentiController.update();
                     break;
                 case 4:
-                  //  disciplineController.delete();
+                    utentiController.delete();
                     break;
                 //case 5:
                    // disciplineController.read();
@@ -93,37 +94,37 @@ public class Main {
                     System.out.println("Scelta errata. Scegliere un numero da 1 a 4 o 9");
             }
         }
-//        else if(entityChoice == 3){
-//            System.out.println("***Menu***");
-//            System.out.println("1. crea un nuova sport");
-//            System.out.println("2. lista Sport");
-//            System.out.println("3. aggiorna sport ");
-//            System.out.println("4. elimina sport");
-//
-//            System.out.println("9. Exit");
-//            System.out.print("Inserisci la tua scelta: ");
-//            choice = scanner.nextInt();
-//            SportsController sportsController = new SportsController();
-//            switch(choice){
-//                case 1:
-//                    sportsController.create();
-//                    break;
-//                case 2:
-//                    sportsController.read();
-//                    break;
-//                case 3:
-//                    sportsController.update();
-//                    break;
-//                case 4:
-//                    sportsController.delete();
-//                    break;//
-//                case 9:
-//                    System.out.println("exiting");
-//                    break;
-//                default:
-//                    System.out.println("Scelta errata. Scegliere un numero da 1 a 4 o 9");
-//            }
-//        }
+        else if(entityChoice == 3){
+            System.out.println("***Menu Prestiti***");
+            System.out.println("1. associa utente a libro");
+            System.out.println("2. lista prestiti");
+            System.out.println("3. aggiorna prestito ");
+            System.out.println("4.  elimina prestito");
+
+            System.out.println("9. Exit");
+            System.out.print("Inserisci la tua scelta: ");
+            choice = scanner.nextInt();
+                PrestitiController prestitiController = new PrestitiController();
+            switch(choice){
+                case 1:
+                    prestitiController.create();
+                    break;
+                case 2:
+                    prestitiController.read();
+                    break;
+                case 3:
+                    prestitiController.update();
+                    break;
+                case 4:
+                    prestitiController.delete();
+                    break;//
+                case 9:
+                    System.out.println("exiting");
+                    break;
+                default:
+                    System.out.println("Scelta errata. Scegliere un numero da 1 a 4 o 9");
+            }
+        }
 //        else if(entityChoice == 4){
 //            System.out.println("***Menu***");
 //            System.out.println("1. associa atleta a gara");
