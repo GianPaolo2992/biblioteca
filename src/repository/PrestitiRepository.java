@@ -118,6 +118,25 @@ public class PrestitiRepository {
             System.exit(0);
         }
     }
+    public void updateDataFine(Prestiti oPrestiti){
+        try{
+            Connection c = DbConnection.openConnection();
+            System.out.println("Connnessione Riuscita");
+            String query = "UPDATE prestiti " +
+                    "SET  fine = ? "+
+                    "WHERE idp = ? ";
+            PreparedStatement pstmt = c.prepareStatement(query);
+            pstmt.setDate(1,java.sql.Date.valueOf(oPrestiti.getDataFine()));
+            pstmt.setInt(2,oPrestiti.getId());
+
+            pstmt.executeUpdate();
+            pstmt.close();
+
+        }catch (ClassNotFoundException|SQLException e){
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+    }
     public void delete(Prestiti oPrestiti) {
         try {
             Connection c = DbConnection.openConnection();

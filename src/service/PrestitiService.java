@@ -27,20 +27,31 @@ public class PrestitiService {
         public List<Prestiti> read(){
             return prestitiRepository.read();
         }
-    public void update(int id, int idu, LocalDate dataInizio, String idl, LocalDate dataFine) {
+    public void update(int idp, int idu, LocalDate dataInizio, String idl, LocalDate dataFine) {
         // Controlla se il libro esiste nella tabella 'libri'
         if (!libriRepository.libroIdIsPresentDB(idl.toUpperCase())) { // Conversione a maiuscolo per sicurezza
             System.out.println("Il libro con ID " + idl + " non esiste nella tabella 'libri'.");
             return; // Esci se il libro non esiste
         }
 
+
         Prestiti oPrestiti = new Prestiti();
-        oPrestiti.setId(id);
+        oPrestiti.setId(idp);
         oPrestiti.setIDU(idu);
         oPrestiti.setDataInizio(dataInizio);
         oPrestiti.setIDL(idl.toUpperCase()); // Conversione a maiuscolo per sicurezza
         oPrestiti.setDataFine(dataFine);
         prestitiRepository.update(oPrestiti);
+    }
+    public void updateDataFine(LocalDate dataFine,int idp ) {
+
+
+
+        Prestiti oPrestiti = new Prestiti();
+        oPrestiti.setId(idp);
+
+        oPrestiti.setDataFine(dataFine);
+        prestitiRepository.updateDataFine(oPrestiti);
     }
 
 

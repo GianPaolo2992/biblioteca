@@ -100,6 +100,7 @@ public class Main {
             System.out.println("2. lista prestiti");
             System.out.println("3. aggiorna prestito ");
             System.out.println("4.  elimina prestito");
+            System.out.println("5.  aggiorna data fine prestito");
 
             System.out.println("9. Exit");
             System.out.print("Inserisci la tua scelta: ");
@@ -117,7 +118,10 @@ public class Main {
                     break;
                 case 4:
                     prestitiController.delete();
-                    break;//
+                    break;
+                case 5:
+                    prestitiController.updateDataFine();
+                    break;
                 case 9:
                     System.out.println("exiting");
                     break;

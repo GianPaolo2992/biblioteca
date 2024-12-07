@@ -72,7 +72,7 @@ public class PrestitiController {
             System.out.println("inserisci l'id del libro ");
             String idl = scanner.nextLine().toUpperCase();
 
-            System.out.println("inserisci la data inizio prestito");
+            System.out.println("inserisci la data fine prestito");
             String dataFineInput = scanner.nextLine();
             DateTimeFormatter formatterFine = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate dataFine = LocalDate.parse(dataFineInput,formatterFine);
@@ -80,6 +80,19 @@ public class PrestitiController {
             prestitiService.update(idp,idu,dataInizio,idl,dataFine);
 
         }
+    public void updateDataFine(){
+        read();
+        System.out.println("inserisci l'id dell'prestito da aggiornare ");
+        int idp = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("inserisci la data fine prestito");
+        String dataFineInput = scanner.nextLine();
+        DateTimeFormatter formatterUpdateFine = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dataFine = LocalDate.parse(dataFineInput,formatterUpdateFine);
+
+        prestitiService.updateDataFine(dataFine,idp);
+
+    }
    // hy237
 
 
