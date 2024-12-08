@@ -14,23 +14,23 @@ import java.util.List;
 
 public class PrestitiRepository {
 
-    public boolean libroIdIsPresentDB(String idl){
+    public boolean libroIdIsPresentDB(String idl) {
         boolean isPresent = false;
-        try{
+        try {
             Connection c = DbConnection.openConnection();
             System.out.println("connessione riuscita");
             String query = "SELECT  COUNT(idl) " +
                     "FROM libri l " +
                     "WHERE l.idl = ?";
             PreparedStatement pstmt = c.prepareStatement(query);
-            pstmt.setString(1,idl);
+            pstmt.setString(1, idl);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()){
-                isPresent = rs.getInt(1)>0;
+            if (rs.next()) {
+                isPresent = rs.getInt(1) > 0;
             }
             pstmt.close();
 
-        }catch (ClassNotFoundException | SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getMessage());
             System.exit(0);
 
@@ -39,20 +39,20 @@ public class PrestitiRepository {
 
     }
 
-    public void create(Prestiti oPrestiti){
+    public void create(Prestiti oPrestiti) {
         try {
             Connection c = DbConnection.openConnection();
             System.out.println("Connessione Riuscita");
             String query = "INSERT INTO prestiti (idu,inizio,id_libro,fine)VALUES(?,?,?,?)";
             PreparedStatement pstmt = c.prepareStatement(query);
-            pstmt.setInt(1,oPrestiti.getIdU());
-            pstmt.setDate(2,java.sql.Date.valueOf(oPrestiti.getDataInizio()));
-            pstmt.setString(3,oPrestiti.getIDL().toUpperCase());
-            pstmt.setDate(4,java.sql.Date.valueOf(oPrestiti.getDataFine()));
+            pstmt.setInt(1, oPrestiti.getIdU());
+            pstmt.setDate(2, java.sql.Date.valueOf(oPrestiti.getDataInizio()));
+            pstmt.setString(3, oPrestiti.getIDL().toUpperCase());
+            pstmt.setDate(4,null);
 
             pstmt.executeUpdate();
             pstmt.close();
-        }catch (ClassNotFoundException| SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         }
@@ -96,52 +96,54 @@ public class PrestitiRepository {
         return listaPrestiti;
     }
 
-    public void update(Prestiti oPrestiti){
-        try{
+    public void update(Prestiti oPrestiti) {
+        try {
             Connection c = DbConnection.openConnection();
             System.out.println("Connnessione Riuscita");
             String query = "UPDATE prestiti " +
-                    "SET idu = ?, inizio = ?, id_libro = ?, fine = ? "+
+                    "SET idu = ?, inizio = ?, id_libro = ?, fine = ? " +
                     "WHERE idp = ? ";
             PreparedStatement pstmt = c.prepareStatement(query);
-            pstmt.setInt(1,oPrestiti.getIdU());
-            pstmt.setDate(2,java.sql.Date.valueOf(oPrestiti.getDataInizio()));
-            pstmt.setString(3,oPrestiti.getIDL());
-            pstmt.setDate(4,java.sql.Date.valueOf(oPrestiti.getDataFine()));
-            pstmt.setInt(5,oPrestiti.getId());
+            pstmt.setInt(1, oPrestiti.getIdU());
+            pstmt.setDate(2, java.sql.Date.valueOf(oPrestiti.getDataInizio()));
+            pstmt.setString(3, oPrestiti.getIDL());
+            pstmt.setDate(4, java.sql.Date.valueOf(oPrestiti.getDataFine()));
+            pstmt.setInt(5, oPrestiti.getId());
 
             pstmt.executeUpdate();
             pstmt.close();
 
-        }catch (ClassNotFoundException|SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         }
     }
-    public void updateDataFine(Prestiti oPrestiti){
-        try{
+
+    public void updateDataFine(Prestiti oPrestiti) {
+        try {
             Connection c = DbConnection.openConnection();
             System.out.println("Connnessione Riuscita");
             String query = "UPDATE prestiti " +
-                    "SET  fine = ? "+
+                    "SET  fine = ? " +
                     "WHERE idp = ? ";
             PreparedStatement pstmt = c.prepareStatement(query);
-            pstmt.setDate(1,java.sql.Date.valueOf(oPrestiti.getDataFine()));
-            pstmt.setInt(2,oPrestiti.getId());
+            pstmt.setDate(1, java.sql.Date.valueOf(oPrestiti.getDataFine()));
+            pstmt.setInt(2, oPrestiti.getId());
 
             pstmt.executeUpdate();
             pstmt.close();
 
-        }catch (ClassNotFoundException|SQLException e){
+        } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         }
     }
+
     public void delete(Prestiti oPrestiti) {
         try {
             Connection c = DbConnection.openConnection();
-            System.out.println("connessione Riuscita");
-            String query = "DELETE FROM prestiti WHERE idp = ?";
+            System.out.println("connessione Riuscita ciao");
+            String query = "DELETE FROM prestiti WHERE idp = ? ";
             PreparedStatement pstmt = c.prepareStatement(query);
             pstmt.setInt(1, oPrestiti.getId());
             pstmt.executeUpdate();
@@ -152,4 +154,56 @@ public class PrestitiRepository {
             System.exit(0);
         }
     }
+
+    public Prestiti findById(int idp) {
+        Prestiti prestito = null;
+
+
+        try {
+            Connection c = DbConnection.openConnection();
+            String query = "SELECT * FROM prestiti WHERE idp = ?";
+            PreparedStatement pstmt = c.prepareStatement(query);
+            pstmt.setInt(1, idp);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                prestito = new Prestiti();
+                prestito.setId(rs.getInt("idp"));
+                prestito.setIDU(rs.getInt("idu"));
+                prestito.setDataInizio(rs.getDate("inizio").toLocalDate());
+                prestito.setIDL(rs.getString("id_libro"));
+                prestito.setDataFine(rs.getDate("fine").toLocalDate());
+            }
+            pstmt.close();
+
+        } catch (ClassNotFoundException | SQLException|RuntimeException e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+        return prestito;
+    }
+    public Prestiti findByLibroId(String idL) {
+        Prestiti prestito = null;
+        String query = "SELECT * FROM prestiti WHERE id_libro = ? AND fine IS NULL"; // Trova solo i prestiti attivi
+        try (Connection c = DbConnection.openConnection();
+             PreparedStatement pstmt = c.prepareStatement(query)) {
+            pstmt.setString(1, idL.toUpperCase());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    prestito = new Prestiti();
+                    prestito.setId(rs.getInt("idp"));
+                    prestito.setIDU(rs.getInt("idu"));
+                    prestito.setDataInizio(rs.getDate("inizio").toLocalDate());
+                    prestito.setIDL(rs.getString("id_libro"));
+                    prestito.setDataFine(rs.getDate("fine") != null ? rs.getDate("fine").toLocalDate() : null);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return prestito;
+    }
+
+
 }

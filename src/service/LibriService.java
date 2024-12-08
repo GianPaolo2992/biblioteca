@@ -26,8 +26,16 @@ public class LibriService {
     }
 
     public void delete (String id){
-        Libri libro = new Libri();
+        Libri libro = libriRepository.findById(id);
         libro.setId(id);
-        libriRepository.delete(libro);
+        if (libro.getPrestito() == null) {
+            libriRepository.delete(libro);
+        }else if(libro == null){
+            System.out.println("libro non presente nell' archivio");
+
+        }else{
+            System.out.println("non puoi eliminare un libro che attualmente è in prestito");
+        }
+
     }
 }

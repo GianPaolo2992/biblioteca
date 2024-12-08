@@ -3,6 +3,7 @@ package controller;
 import entity.Libri;
 
 import entity.Prestiti;
+import repository.LibriRepository;
 import service.LibriService;
 import service.PrestitiService;
 import service.UtentiService;
@@ -20,7 +21,7 @@ public class PrestitiController {
         LibriController libriController = new LibriController();
         PrestitiService prestitiService= new PrestitiService();
 
-        public void create(){
+       /* public void create(){
             utentiController.read();
 
             System.out.println("crea un oggetto prestito");
@@ -36,16 +37,84 @@ public class PrestitiController {
             System.out.println("inserisci l'id del libro ");
             String idl = scanner.nextLine();
 
-            System.out.println("inserisci la data inizio prestito");
+            System.out.println("inserisci la data fine prestito");
             String dataFineInput = scanner.nextLine();
             DateTimeFormatter formatterFine = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate dataFine = LocalDate.parse(dataFineInput,formatterFine);
 
-            prestitiService.create(idu,dataInizio,idl,dataFine);
 
-        }
+            Prestiti prestito = getPrestiti(idu, dataInizio, idl, dataFine);
 
-        public void read(){
+            LibriRepository libriRepository = new LibriRepository();
+            // Aggiorna il libro per impostare il prestito
+            Libri libro = libriRepository.findById(prestito.getIDL());
+            if (libro != null && libro.getPrestito() == null) {
+                prestitiService.create(idu,dataInizio,idl,dataFine);
+                libro.setPrestito(prestito);
+            }
+            else if(libro == null ){
+                throw new RuntimeException("libro non trovato");
+            }
+            else if( libro.getPrestito() != null){
+
+                throw new RuntimeException("libro non disponibile in archivio, gia in uso da un altro utente");
+
+            }
+        }*/
+       public void create() {
+           utentiController.read();
+
+           System.out.println("crea un oggetto prestito");
+           System.out.println("inserisci l'id dell'utente ");
+           int idu = scanner.nextInt();
+           scanner.nextLine();
+           System.out.println("inserisci la data inizio prestito");
+           String dataInizioInput = scanner.nextLine();
+           DateTimeFormatter formatterInizio = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+           LocalDate dataInizio = LocalDate.parse(dataInizioInput, formatterInizio);
+
+           libriController.read();
+           System.out.println("inserisci l'id del libro ");
+           String idl = scanner.nextLine().toUpperCase();
+
+         /*  System.out.println("inserisci la data fine prestito");
+           String dataFineInput = scanner.nextLine();
+           DateTimeFormatter formatterFine = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+           LocalDate dataFine = LocalDate.parse(dataFineInput, formatterFine);*/
+
+
+           Prestiti prestito = getPrestiti(idu, dataInizio, idl, null);
+
+           LibriRepository libriRepository = new LibriRepository();
+           // Aggiorna il libro per impostare il prestito
+           Libri libro = libriRepository.findById(prestito.getIDL());
+           if (libro != null && libro.getPrestito() == null) {
+               prestitiService.create(idu,dataInizio,idl,null);
+               libro.setPrestito(prestito);
+           }
+           else if(libro == null ){
+               System.out.println("libro non trovato");
+           }
+           else if( libro.getPrestito() != null){
+               System.out.println("libro non disponibile in archivio, gia in uso da un altro utente");
+
+
+
+           }
+       }
+
+
+    private static Prestiti getPrestiti(int idu, LocalDate dataInizio, String idl, LocalDate dataFine) {
+        Prestiti prestito = new Prestiti();
+        prestito.setIDU(idu);
+        prestito.setDataInizio(dataInizio);
+        prestito.setIDL(idl);
+        prestito.setDataFine(dataFine);
+        return prestito;
+    }
+
+
+    public void read(){
             System.out.println("ecco una lista di prestiti");
             List<Prestiti> listaPrestiti = prestitiService.read();
             for(Prestiti prestiti : listaPrestiti ){
@@ -93,8 +162,7 @@ public class PrestitiController {
         prestitiService.updateDataFine(dataFine,idp);
 
     }
-   // hy237
-
+   
 
 
         public void delete(){

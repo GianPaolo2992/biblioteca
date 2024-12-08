@@ -30,7 +30,7 @@ public class Main {
                 System.out.println("2. lista libri");
                 System.out.println("3. aggiorna libri ");
                 System.out.println("4.  elimina libri");
-                System.out.println("5.  stampa libri di gare per id utente");
+
                 System.out.println("9. Exit");
                 System.out.print("Inserisci la tua scelta: ");
                 choice = scanner.nextInt();

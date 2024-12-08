@@ -10,11 +10,10 @@ public class Prestiti {
     private LocalDate dataFine;
 
 
+
+
 //    public Prestiti(int idu,LocalDate dataInizio, String idl,LocalDate dataFine){
-//        this.idU = idu;
-//        this.dataInizio = dataInizio;
-//        this.idL = idl;
-//        this.dataFine = dataFine;
+//
 //
 //    }
 

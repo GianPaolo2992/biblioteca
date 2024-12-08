@@ -2,6 +2,7 @@ package repository;
 
 import config.DbConnection;
 import entity.Libri;
+import entity.Prestiti;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,6 +47,7 @@ public class LibriRepository {
             pstmt.setString(1,oLibro.getId().toUpperCase());
             pstmt.setString(2,oLibro.getTitolo());
             pstmt.setString(3,oLibro.getAutore());
+
             pstmt.executeUpdate();
             pstmt.close();
         }catch (ClassNotFoundException| SQLException e){
@@ -112,4 +114,55 @@ public class LibriRepository {
             System.exit(0);
         }
     }
+    /*public Libri findById(String idl){
+        PrestitiRepository prestitiRepository = new PrestitiRepository();
+        Libri libro = new Libri();
+        try{
+            Connection c = DbConnection.openConnection();
+            System.out.println("Connessione Riuscita");
+
+
+            String query = "SELECT * FROM libri WHERE idl = ? ";
+            PreparedStatement pstmt = c.prepareStatement(query);
+            pstmt.setString(1,idl.toUpperCase());
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+
+                libro.setId(rs.getString("idl"));
+                libro.setTitolo(rs.getString("titolo"));
+                libro.setAutore(rs.getString("autore"));
+
+            }
+            pstmt.close();
+        }catch (ClassNotFoundException | SQLException | RuntimeException e){
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+        return libro;
+    }*/
+    public Libri findById(String idl) {
+        Libri libro = null;
+        String query = "SELECT * FROM libri WHERE idl = ?";
+        try (Connection c = DbConnection.openConnection();
+             PreparedStatement pstmt = c.prepareStatement(query)) {
+            pstmt.setString(1, idl.toUpperCase()); // Assicurati che l'ID sia in maiuscolo per la consistenza
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Assicurati che ci siano risultati
+                    libro = new Libri();
+                    libro.setId(rs.getString("idl"));
+                    libro.setTitolo(rs.getString("titolo"));
+                    libro.setAutore(rs.getString("autore"));
+                    // Recupera il prestito associato, se presente
+                    PrestitiRepository prestitiRepository = new PrestitiRepository();
+                    Prestiti prestito = prestitiRepository.findByLibroId(idl);
+                    libro.setPrestito(prestito);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return libro;
+    }
+
 }

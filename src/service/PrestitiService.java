@@ -55,11 +55,25 @@ public class PrestitiService {
     }
 
 
-    public void delete (int id){
-            Prestiti prestiti = new Prestiti();
-            prestiti.setId(id);
-            prestitiRepository.delete(prestiti);
+
+    public void delete(int prestitoId) {
+        // Recupera il prestito dal repository
+        Prestiti prestito = prestitiRepository.findById(prestitoId);
+        if (prestito != null) {
+            // Rimuovi il prestito dalla tabella 'prestiti' nel database
+            prestitiRepository.delete(prestito);
+
+            // Recupera il libro associato
+            Libri libro = libriRepository.findById(prestito.getIDL());
+            if (libro != null && libro.getPrestito() != null && libro.getPrestito().getId() == prestitoId) {
+                // Rimuovi l'associazione del prestito dal libro
+                libro.setPrestito(null);
+                // Non è necessario aggiornare il libro nel repository se il database non gestisce questa relazione
+            }
         }
     }
+
+}
+
 
 

@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Libri;
+import repository.PrestitiRepository;
 import service.LibriService;
 
 import java.util.List;
@@ -49,6 +50,8 @@ public class LibriController {
         read();
         System.out.println("scegli un id tra i libri mostrati per eliminarlo");
         String idl = scanner.nextLine();
+
+
         libriService.delete(idl);
     }
 }
