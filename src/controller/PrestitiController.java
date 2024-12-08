@@ -4,6 +4,7 @@ import entity.Libri;
 
 import entity.Prestiti;
 import repository.LibriRepository;
+import repository.PrestitiRepository;
 import service.LibriService;
 import service.PrestitiService;
 import service.UtentiService;
@@ -160,8 +161,16 @@ public class PrestitiController {
         LocalDate dataFine = LocalDate.parse(dataFineInput,formatterUpdateFine);
 
         prestitiService.updateDataFine(dataFine,idp);
-
+        PrestitiRepository prestitiRepository = new PrestitiRepository();
+        LibriRepository libriRepository = new LibriRepository();
+        Prestiti Prestito = prestitiRepository.findById(idp);
+        Libri libro = libriRepository.findById(Prestito.getIDL());
+        if (libro != null) {
+            libro.setPrestito(null);
+            }
     }
+
+
    
 
 
