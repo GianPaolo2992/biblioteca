@@ -38,8 +38,26 @@ public class PrestitiRepository {
         return isPresent;
 
     }
-
     public void create(Prestiti oPrestiti) {
+        try {
+            Connection c = DbConnection.openConnection();
+            System.out.println("Connessione Riuscita");
+            String query = "INSERT INTO prestiti (idu, inizio, id_libro, fine) VALUES (?, ?, ?, ?)";
+            PreparedStatement pstmt = c.prepareStatement(query);
+            pstmt.setInt(1, oPrestiti.getIdU());
+            pstmt.setDate(2, java.sql.Date.valueOf(oPrestiti.getDataInizio()));
+            pstmt.setString(3, oPrestiti.getIDL().toUpperCase());
+            pstmt.setDate(4, null);
+
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    /*public void create(Prestiti oPrestiti) {
         try {
             Connection c = DbConnection.openConnection();
             System.out.println("Connessione Riuscita");
@@ -48,7 +66,7 @@ public class PrestitiRepository {
             pstmt.setInt(1, oPrestiti.getIdU());
             pstmt.setDate(2, java.sql.Date.valueOf(oPrestiti.getDataInizio()));
             pstmt.setString(3, oPrestiti.getIDL().toUpperCase());
-            pstmt.setDate(4,null);
+            pstmt.setDate(4, null);
 
             pstmt.executeUpdate();
             pstmt.close();
@@ -57,7 +75,7 @@ public class PrestitiRepository {
             System.exit(0);
         }
 
-    }
+    }*/
 
     public List<Prestiti> read() {
         List<Prestiti> listaPrestiti = new ArrayList<>();
@@ -107,7 +125,7 @@ public class PrestitiRepository {
             pstmt.setInt(1, oPrestiti.getIdU());
             pstmt.setDate(2, java.sql.Date.valueOf(oPrestiti.getDataInizio()));
             pstmt.setString(3, oPrestiti.getIDL());
-            pstmt.setDate(4, java.sql.Date.valueOf(oPrestiti.getDataFine()));
+            // pstmt.setDate(4, java.sql.Date.valueOf(oPrestiti.getDataFine()));
             pstmt.setInt(5, oPrestiti.getId());
 
             pstmt.executeUpdate();
@@ -176,18 +194,42 @@ public class PrestitiRepository {
             }
             pstmt.close();
 
-        } catch (ClassNotFoundException | SQLException|RuntimeException e) {
+        } catch (ClassNotFoundException | SQLException | RuntimeException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         }
         return prestito;
     }
+
     public Prestiti findByLibroId(String idL) {
         Prestiti prestito = null;
         String query = "SELECT * FROM prestiti WHERE id_libro = ? AND fine IS NULL"; // Trova solo i prestiti attivi
         try (Connection c = DbConnection.openConnection();
              PreparedStatement pstmt = c.prepareStatement(query)) {
             pstmt.setString(1, idL.toUpperCase());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    prestito = new Prestiti();
+                    prestito.setId(rs.getInt("idp"));
+                    prestito.setIDU(rs.getInt("idu"));
+                    prestito.setDataInizio(rs.getDate("inizio").toLocalDate());
+                    prestito.setIDL(rs.getString("id_libro"));
+                    prestito.setDataFine(rs.getDate("fine") != null ? rs.getDate("fine").toLocalDate() : null);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return prestito;
+    }
+
+    public Prestiti findByUtenteId(String idu) {
+        Prestiti prestito = null;
+        String query = "SELECT * FROM prestiti WHERE idu = ? AND fine IS NULL"; // Trova solo i prestiti attivi
+        try (Connection c = DbConnection.openConnection();
+             PreparedStatement pstmt = c.prepareStatement(query)) {
+            pstmt.setString(1, idu);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     prestito = new Prestiti();

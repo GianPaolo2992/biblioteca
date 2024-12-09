@@ -10,8 +10,6 @@ public class Prestiti {
     private LocalDate dataFine;
 
 
-
-
 //    public Prestiti(int idu,LocalDate dataInizio, String idl,LocalDate dataFine){
 //
 //
@@ -58,9 +56,9 @@ public class Prestiti {
         this.idL = idl;
     }
 
-   public String toString(){
-       return "/id : " + id + " /id utente : " + idU+ " /data inizio prestito : " + dataInizio +  " /data fine prestito :" +(dataFine != null ? dataFine : " null") + " /id Libro " + idL;
-}
+    public String toString() {
+        return "/id : " + id + " /id utente : " + idU + " /data inizio prestito : " + dataInizio + " /data fine prestito :" + (dataFine != null ? dataFine : " null") + " /id Libro " + idL;
+    }
 
     // System.out.println("id : " + prestiti.getId() +"id utente : " + prestiti.getIdU()+ "/ data inizio prestito : " + prestiti.getDataInizio() + "/ data fine prestito :" + prestiti.getDataFine() + "/ id Libro " + prestiti.getIDL());
 //

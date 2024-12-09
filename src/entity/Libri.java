@@ -7,7 +7,7 @@ public class Libri {
     private String autore;
     private Prestiti prestito;
 
-    public Libri(String id,String titolo,String autore){
+    public Libri(String id, String titolo, String autore) {
         this.idl = id;
         this.titolo = titolo;
         this.autore = autore;
@@ -27,25 +27,28 @@ public class Libri {
         this.idl = id;
     }
 
-    public String getTitolo(){
+    public String getTitolo() {
         return titolo;
     }
 
-    public void setTitolo(String titolo){
+    public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
 
-    public String getAutore(){
+    public String getAutore() {
         return autore;
     }
-    public void setAutore(String autore){
+
+    public void setAutore(String autore) {
         this.autore = autore;
     }
-    public Prestiti getPrestito(){
+
+    public Prestiti getPrestito() {
         return prestito;
     }
 
-    public void setPrestito(Prestiti prestito){
+    public void setPrestito(Prestiti prestito) {
+
         this.prestito = prestito;
     }
 
@@ -55,7 +58,7 @@ public class Libri {
                 "id='" + idl + '\'' +
                 ", titolo='" + titolo + '\'' +
                 ", autore='" + autore + '\'' +
-               // ", prestito=" + (prestito != null ? prestito.toString() : "null") +
+                // ", prestito=" + (prestito != null ? prestito.toString() : "null") +
                 '}';
     }
 

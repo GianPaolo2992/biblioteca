@@ -1,9 +1,18 @@
 package controller;
 
+import config.DbConnection;
 import entity.Libri;
+import entity.Prestiti;
 import entity.Utenti;
+import repository.LibriRepository;
+import repository.PrestitiRepository;
+import repository.UtentiRepository;
 import service.UtentiService;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,7 +50,7 @@ public class UtentiController {
     }
 
     public void read() {
-        System.out.println("ecco una lista di libri");
+        System.out.println("ecco una lista di utenti");
         List<Utenti> listaUtenti = utentiService.read();
         for (Utenti utente : listaUtenti) {
             System.out.println(utente.toStringinLine());
@@ -62,30 +71,49 @@ public class UtentiController {
         Utenti oUtente = new Utenti(nome, cognome);
         utentiService.update(oUtente, idu);
     }
-    /*public void updateLibroprestato() {
+    /*public void printLibriInPrestito() {
+        read(); // Mostra la lista degli utenti
+        System.out.println("Scegli l'ID dell'utente per visualizzare i libri in prestito:");
+        int idu = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("l' utente ha dei libri in prestito?");
-        System.out.println("1. vero oppure 0.falso");
-        boolean prestato = false;
-        boolean isValid = false;
+        UtentiRepository utentiRepository = new UtentiRepository();
+        Utenti utente = utentiRepository.findById(idu); // Recupera l'utente dal servizio
+        if (utente != null) {
 
-        while (!isValid) {
-            int scelta = 0;
-            scelta = scanner.nextInt();
-            scanner.nextLine();
-            if (scelta == 1) {
-                prestato = true;
-                isValid = true;
-            } else if (scelta == 0) {
-
-                isValid = true;
-            } else {
-                System.out.println("scelta non valida scegliere 1. vero oppure 0.falso");
+            List<Libri> libriInPrestito = utente.getListaLibri();
+            utente.toString();
+            for(Libri libro: libriInPrestito){
+                libro.toString();
             }
+            if (libriInPrestito == null || libriInPrestito.isEmpty()) {
+                System.out.println("L'utente non ha libri in prestito.");
+            }
+        } else {
+            System.out.println("Utente non trovato.");
         }
-        Utenti oUtente = new Utenti(prestato);
-        utentiService.update(oUtente);
     }*/
+
+
+    public void printLibriInPrestito() {
+        read(); // Mostra la lista degli utenti
+        System.out.println("Scegli l'ID dell'utente per visualizzare i libri in prestito:");
+        int idu = scanner.nextInt();
+        scanner.nextLine();
+
+        UtentiRepository utentiRepository = new UtentiRepository();
+        Utenti utente = utentiRepository.findById(idu); // Recupera l'utente dal servizio
+        if (utente != null) {
+            List<Libri> libriInPrestito = utente.printLibriInPrestito();
+            if (libriInPrestito == null || libriInPrestito.isEmpty()) {
+                System.out.println("L'utente non ha libri in prestito.");
+            }
+        } else {
+            System.out.println("Utente non trovato.");
+        }
+    }
+
+
 
     public void delete() {
         read();
@@ -93,6 +121,12 @@ public class UtentiController {
         int idu = scanner.nextInt();
         scanner.nextLine();
         Utenti oUtente = new Utenti(idu);
-        utentiService.delete(oUtente);
+        if (!oUtente.getLibri_prestati()) {
+            utentiService.delete(oUtente);
+        } else {
+            System.out.println("non puoi eliminare un utente che ha prestiti attivi");
+        }
+
     }
+
 }

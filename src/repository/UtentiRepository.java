@@ -1,6 +1,7 @@
 package repository;
 
 import config.DbConnection;
+import entity.Libri;
 import entity.Utenti;
 
 import java.sql.Connection;
@@ -88,5 +89,26 @@ public class UtentiRepository {
             System.err.println(e.getMessage());
             System.exit(0);
         }
+    }
+    public Utenti findById(int idu) {
+        Utenti utenti = null;
+        String query = "SELECT * FROM utenti WHERE idu = ?";
+        try (Connection c = DbConnection.openConnection();
+             PreparedStatement pstmt = c.prepareStatement(query)) {
+            pstmt.setInt(1, idu); // Assicurati che l'ID sia in maiuscolo per la consistenza
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Assicurati che ci siano risultati
+                    utenti = new Utenti();
+                    utenti.setId(rs.getInt("idu"));
+                    utenti.setNome(rs.getString("nome"));
+                    utenti.setCognome(rs.getString("cognome"));
+
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return utenti;
     }
 }
