@@ -24,4 +24,8 @@ public class UtentiService {
     public void delete(Utenti oUtente) {
         utentiRepository.delete(oUtente);
     }
+
+    public List<Utenti> greatersReader(){
+        return utentiRepository.greatersReader();
+    }
 }

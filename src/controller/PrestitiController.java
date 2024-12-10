@@ -106,7 +106,6 @@ public class PrestitiController {
         }
     }
 
-
     private static Prestiti getPrestiti(int idu, LocalDate dataInizio, String idl, LocalDate dataFine) {
         Prestiti prestito = new Prestiti();
         prestito.setIDU(idu);
@@ -187,6 +186,74 @@ public class PrestitiController {
         scanner.nextLine();
 
         prestitiService.delete(idp);
+    }
+
+    public void readAllLibriXUtente(){
+        utentiController.read();
+        System.out.println("inserisci l'id dell'utente da stampare ");
+        int idu = scanner.nextInt();
+        scanner.nextLine();
+        List<Libri> listaLibri = prestitiService.readLibriXUtente(idu);
+        UtentiRepository utentiRepository = new UtentiRepository();
+        Utenti utenti = utentiRepository.findById(idu);
+        System.out.println("ecco una lista di prestiti");
+        System.out.println(utenti.toStringinLine());
+        for (Libri libri : listaLibri) {
+
+            System.out.println(libri.toString());
+        }
+
+
+    }
+    public void ordiniXutenteCronologico(){
+        LibriRepository libriRepository = new LibriRepository();
+        utentiController.read();
+        System.out.println("inserisci l'id dell'utente da stampare ");
+        int idu = scanner.nextInt();
+        scanner.nextLine();
+        List<Prestiti> listaPrestitiSortAsc = prestitiService.ordiniXutenteCronologico(idu);
+        UtentiRepository utentiRepository = new UtentiRepository();
+        Utenti utenti = utentiRepository.findById(idu);
+        System.out.println("ecco una lista di prestiti");
+        for (Prestiti prestiti : listaPrestitiSortAsc) {
+            Libri libri = libriRepository.findById(prestiti.getIDL());
+
+            System.out.println("utente "+utenti.getNome() + " " + utenti.getCognome()+ "libro" + libri.getId() + " " + libri.getTitolo() + "/data inizio: " + prestiti.getDataInizio()+ "/ data fine" + prestiti.getDataFine());
+        }
+    }
+    public void libriNonRientrati(){
+        LibriRepository libriRepository = new LibriRepository();
+
+        System.out.println("ecco una lista di libri non rientrati");
+        List<Prestiti> libriNonRientrati = prestitiService.libriNonRientrati();
+        for (Prestiti prestiti : libriNonRientrati){
+            Libri libri = libriRepository.findById(prestiti.getIDL());
+
+            System.out.println(prestiti.toString());
+            System.out.println(libri.toString());
+
+
+        }
+    }
+    public void ordiniXPeriodo(){
+        LibriRepository libriRepository = new LibriRepository();
+
+        System.out.println("ecco una lista prestiti per perido");
+        read();
+        System.out.println("inserisci la data del perido");
+        String dataInizoInput = scanner.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate dataInizio = LocalDate.parse(dataInizoInput,formatter);
+
+        List<Prestiti> listaOrdiniXPeriodo = prestitiService.ordiniXPeriodo(dataInizio);
+        for (Prestiti prestiti : listaOrdiniXPeriodo){
+            Libri libri = libriRepository.findById(prestiti.getIDL());
+
+            System.out.println(prestiti.toString());
+            System.out.println(libri.toString());
+
+
+        }
     }
 }
 

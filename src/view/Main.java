@@ -3,6 +3,8 @@ package view;
 import controller.LibriController;
 import controller.PrestitiController;
 import controller.UtentiController;
+import repository.LibriRepository;
+import repository.UtentiRepository;
 
 import java.util.Scanner;
 
@@ -28,6 +30,8 @@ public class Main {
                 System.out.println("2. lista libri");
                 System.out.println("3. aggiorna libri ");
                 System.out.println("4.  elimina libri");
+                System.out.println("5. lista di libri in prestito da piu di 15 giorni");
+
 
                 System.out.println("9. Exit");
                 System.out.print("Inserisci la tua scelta: ");
@@ -46,10 +50,13 @@ public class Main {
                     case 4:
                         libriController.delete();
                         break;
-                    //                    case 5:
-                    //                        athleteController.read();
-                    //                        gameController.printGamesForAthlete();
-                    //                        break;
+                    case 5:
+                        libriController.bookBeyondPeriod();
+                        break;
+                    case 6:
+                        LibriRepository libriRepository = new LibriRepository();
+                        libriRepository.gratersLoans();
+                        break;
                     case 9:
                         System.out.println("exiting");
                         break;
@@ -83,6 +90,10 @@ public class Main {
                     case 5:
                         utentiController.printLibriInPrestito();
                         break;
+                    case 6:
+                        UtentiRepository utentiRepository = new UtentiRepository();
+                        utentiRepository.greatersReader();
+                        break;
                     case 9:
                         System.out.println("exiting");
                         break;
@@ -96,6 +107,10 @@ public class Main {
                 System.out.println("3. aggiorna prestito ");
                 System.out.println("4.  elimina prestito");
                 System.out.println("5.  aggiorna data fine prestito");
+                System.out.println("6. leggi libri in prestito per singolo utente");
+                System.out.println("7. leggi prestiti per singolo utente in ordine cronologico");
+                System.out.println("8. leggi libri non rientrati in archivio");
+
 
                 System.out.println("9. Exit");
                 System.out.print("Inserisci la tua scelta: ");
@@ -116,6 +131,18 @@ public class Main {
                         break;
                     case 5:
                         prestitiController.updateDataFine();
+                        break;
+                    case 6:
+                        prestitiController.readAllLibriXUtente();
+                        break;
+                    case 7:
+                        prestitiController.ordiniXutenteCronologico();
+                        break;
+                    case 8:
+                        prestitiController.libriNonRientrati();
+                        break;
+                    case 10:
+                        prestitiController.ordiniXPeriodo();
                         break;
                     case 9:
                         System.out.println("exiting");

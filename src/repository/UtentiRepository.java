@@ -2,6 +2,7 @@ package repository;
 
 import config.DbConnection;
 import entity.Libri;
+import entity.Prestiti;
 import entity.Utenti;
 
 import java.sql.Connection;
@@ -110,5 +111,38 @@ public class UtentiRepository {
             e.printStackTrace();
         }
         return utenti;
+    }
+
+    public List<Utenti> greatersReader(){
+        List<Utenti> listGreatersReader = new ArrayList<>();
+        String query = "SELECT u.nome,u.cognome, u.idu, COUNT(p.idu) AS libriletti " +
+                " FROM utenti u " +
+                "JOIN prestiti p ON p.idu = u.idu " +
+                "GROUP BY u.nome,u.cognome, u.idu " +
+                "ORDER BY libriletti desc " +
+                "LIMIT 3 ";
+        try(Connection c= DbConnection.openConnection();
+            PreparedStatement preparedStatement = c.prepareStatement(query)){
+            try(ResultSet rs = preparedStatement.executeQuery()){
+                while (rs.next()){
+                    Utenti utenti = new Utenti();
+                    utenti.setId(rs.getInt("idu"));
+                    utenti.setNome(rs.getString("nome"));
+                    utenti.setCognome(rs.getString("cognome"));
+
+                    int count = rs.getInt("libriletti");
+                    System.out.println( utenti.toString() + " \n" +"Numero di libri letti : " + count );
+
+                    listGreatersReader.add(utenti);
+
+
+                }
+
+            }
+        }catch (ClassNotFoundException | SQLException e){
+            System.err.println(e.getMessage());
+            System.exit(0);
+        }
+        return listGreatersReader;
     }
 }

@@ -39,4 +39,9 @@ public class LibriService {
         }
 
     }
+
+
+    public List<Libri> bookBeyondPeriod(){
+        return libriRepository.bookBeyondPeriod();
+    }
 }

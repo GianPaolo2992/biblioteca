@@ -9,6 +9,7 @@ public class Utenti {
     private String nome;
     private String cognome;
     private boolean libri_prestati;
+    private Prestiti prestito;
     private List<Libri> libriInPrestito;
 
     public Utenti(String nome, String cognome, boolean prestato) {
@@ -117,6 +118,13 @@ public class Utenti {
 
     public void setLibri_prestati(boolean libri_prestati) {
         this.libri_prestati = libri_prestati;
+    }
+    public Prestiti getPrestito(){
+        return prestito;
+    }
+
+    public void setPrestito(Prestiti prestiti){
+        this.prestito = prestiti;
     }
 
     public String toString() {

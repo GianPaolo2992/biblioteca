@@ -1,7 +1,9 @@
 package controller;
 
 import entity.Libri;
+import entity.Utenti;
 import repository.PrestitiRepository;
+import repository.UtentiRepository;
 import service.LibriService;
 
 import java.util.List;
@@ -54,4 +56,17 @@ public class LibriController {
 
         libriService.delete(idl);
     }
+    public void bookBeyondPeriod(){
+        List<Libri> listBookBeyondPeriod = libriService.bookBeyondPeriod();
+        for(Libri libri : listBookBeyondPeriod){
+            System.out.println(libri.toString());
+            System.out.println(libri.getPrestito().getDataInizio());
+            int id_utente = libri.getPrestito().getIdU();
+            UtentiRepository utentiRepository = new UtentiRepository();
+            Utenti utenti = utentiRepository.findById(id_utente);
+            System.out.println(utenti.toString());
+        }
+    }
+
+
 }

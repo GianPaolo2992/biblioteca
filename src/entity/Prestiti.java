@@ -8,7 +8,7 @@ public class Prestiti {
     private LocalDate dataInizio;
     private String idL;
     private LocalDate dataFine;
-
+    private Utenti utente;
 
 //    public Prestiti(int idu,LocalDate dataInizio, String idl,LocalDate dataFine){
 //
@@ -62,5 +62,6 @@ public class Prestiti {
 
     // System.out.println("id : " + prestiti.getId() +"id utente : " + prestiti.getIdU()+ "/ data inizio prestito : " + prestiti.getDataInizio() + "/ data fine prestito :" + prestiti.getDataFine() + "/ id Libro " + prestiti.getIDL());
 //
+
 
 }

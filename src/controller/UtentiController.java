@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -127,6 +128,17 @@ public class UtentiController {
             System.out.println("non puoi eliminare un utente che ha prestiti attivi");
         }
 
+    }
+
+    public void greatersReader(){
+        LibriRepository libriRepository = new LibriRepository();
+        List<Utenti> listGreatersReader = utentiService.greatersReader();
+        for (Utenti utenti : listGreatersReader){
+            System.out.println(utenti.toString());
+
+
+
+        }
     }
 
 }

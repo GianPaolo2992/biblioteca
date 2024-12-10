@@ -33,6 +33,21 @@ public class PrestitiService {
 
     }
 
+    public List<Libri> readLibriXUtente(int id){
+
+        return prestitiRepository.readLibriXUtente(id);
+    }
+
+
+    public List<Prestiti> ordiniXutenteCronologico(int id){
+        return prestitiRepository.ordiniXutenteCronologico(id);
+    }
+    public List<Prestiti> libriNonRientrati(){
+        return prestitiRepository.libriNonRientrati();
+    }
+    public List<Prestiti> ordiniXPeriodo(LocalDate datainizio){
+        return prestitiRepository.ordiniXPeriodo(datainizio);
+    }
 
     public List<Prestiti> read() {
         return prestitiRepository.read();
